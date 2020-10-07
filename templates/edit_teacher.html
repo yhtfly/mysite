@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>教师职工修改</h1>
+    <form method="POST" action="/edit_teacher/?id={{ result.id }}">
+        <p>教师姓名：<input type="text" name="name" value="{{ result.name }}"></p>
+        <input type="submit" value="提交">
+    </form>
+
+</body>
+</html>

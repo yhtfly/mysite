@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>教师职工表</h1>
+<div><h3><a href="/add_teacher/">添加</a></h3></div>
+<table>
+    <thead>
+        <tr>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in teacher_list  %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.name }}</td>
+                <td>
+                    <a href="/del_teacher/?id={{ row.id }}">删除</a>
+                    |
+                    <a href="/edit_teacher/?id={{ row.id }} }">编辑</a>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
