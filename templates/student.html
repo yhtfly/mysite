@@ -3,11 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Classes</title>
+    <style>
+        .hide{
+            display: none;
+        }
+        .shadow{
+            position:fixed;
+            left:0;
+            top:0;
+            right:0;
+            bottom:0;
+            background-color: black;
+            opacity:0.4;
+            z-index: 999;
+        }
+        .modal{
+            position:fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            height:300px;
+            width:400px;
+            background-color: white;
+            margin-left:-200px;
+            margin-top:-150px;
+        }
+    </style>
 </head>
 <body>
     <h1>学生列表</h1>
     <div>
         <a href="/add_student/">添加</a>
+        <a id="add_modal">对话框添加</a>
     </div>
     <table>
         <thead>
@@ -32,5 +59,48 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div id="shadow" class="shadow hide"></div>
+    <div id="modal"  class="modal hide">
+        <p>姓名：<input id="addname" type="text" name="name" placeholder="小明"></p>
+        <p>
+            班级：
+            <select id="addclassid" name="classid">
+                {% for row in class_list %}
+                    <option value="{{ row.id }}">{{ row.title }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p><input type="text" style="display: none;"></p>
+        <p><input id="addbtn" type="button" value="提交"></p>
+    </div>
+
+    <script src="/static/jquery.min.js"></script>
+    <script>
+        $(function () {
+
+            $('#add_modal').click(function () {
+                $('#shadow,#modal').removeClass('hide')
+            })
+            
+            $('#addbtn').click(function () {
+                $.ajax(
+                    {
+                        url:'/modal_add_student/',
+                        type:'POST',
+                        data:{'name':$('#addname').val(),'class_id':$('#addclassid').val()},
+                        success:function (data) {
+                            data=JSON.parse(data)
+                            if(data.status){
+                                location.reload()
+                            }else{
+                                alert(data.msg)
+                            }
+                        }
+                    }
+                )
+            })
+        })
+    </script>
 </body>
 </html>

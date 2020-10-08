@@ -1,11 +1,13 @@
 from django.shortcuts  import render,redirect
 import pymysql
 from utils.sqlheper import get_list,modify
+from django.http import HttpResponse
 
 def student(request):
     sql = 'select student.id,student.name,classes.title from student left join classes on student.class_id=classes.id'
     student_list=get_list(sql)
-    return render(request, "student.html", {'student_list': student_list})
+    class_list=get_list('select id,title from classes')
+    return render(request, "student.html", {'student_list': student_list,'class_list':class_list})
 
 def add_student(request):
     if request.method == 'GET':
@@ -40,6 +42,19 @@ def edit_student(request):
         sql = 'update student set name=%s,class_Id=%s where id=%s'
         modify(sql,[name,class_id,nid])
         return redirect('/student/')
+
+
+def modal_add_student(request):
+    ret = {'status':True,'msg':None}
+    try:
+        name = request.POST.get('name')
+        class_id = request.POST.get('class_id')
+        modify('insert into student(name,class_id) value(%s,%s)',[name,class_id])
+    except Exception as e:
+        ret['status'] = False
+        ret['msg'] = str(e)
+    import json
+    return HttpResponse(json.dumps(ret))
 
 
 
