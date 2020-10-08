@@ -57,3 +57,19 @@ def modal_add_class(request):
         return HttpResponse('标题不能为空')
 
 
+def modal_edit_class(request):
+
+    ret={'status':True,'msg':None}
+
+    try:
+        nid = request.POST.get('nid')
+        title = request.POST.get('title')
+        modify('update classes set title=%s where id=%s',[title,nid,])
+    except Exception as e:
+        ret['status'] = False
+        ret['msg'] = str(e)
+    finally:
+        import json
+        return HttpResponse(json.dumps(ret))
+
+

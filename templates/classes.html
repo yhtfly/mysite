@@ -49,8 +49,9 @@
 
     <div id='editmodal'  class="modal hide">
             <h3>编辑框</h3>
-            <p>姓名：<input id="title" name="title" type="text"></p>
-            <input type="button" value="提交" onclick="ajaxsend();" />
+            <p>姓名：<input id="edittitle" name="title" type="text"></p>
+            <input type="text" id="editid" style="display:none" />
+            <input type="button" value="提交" onclick="editajaxsend();" />
             <input type="button" value="取消" onclick="cancelmodal();" />
 
             <span id="errormsg"></span>
@@ -74,7 +75,7 @@
                         |
                         <a href="/edit_class/?nid={{ row.id }}">编辑</a>
                         |
-                        <a onclick="modaledit()">对话框编辑</a>
+                        <a onclick="modaledit(this)">对话框编辑</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -88,14 +89,42 @@
         }
         function cancelmodal() {
             document.getElementById("shadow").classList.add('hide');
+            document.getElementById("modal").classList.add('hide');
             document.getElementById("editmodal").classList.add('hide');
         }
 
-        function modaledit(){
+        function modaledit(ths){
             document.getElementById("shadow").classList.remove('hide');
             document.getElementById("editmodal").classList.remove('hide');
+
+            var row = $(ths).parent().prevAll();
+            var content = $(row[0]).text();
+            $('#edittitle').val(content);
+
+            var id = $(row[1]).text();
+            $('#editid').val(id);
         }
 
+        function editajaxsend() {
+            var nid = $('#editid').val()
+            var content = $('#edittitle').val()
+
+            $.ajax(
+                {
+                    url:'/modal_edit_class/',
+                    type:'POST',
+                    data:{'nid':nid,'title':content},
+                    success:function(data){
+                        data = JSON.parse(data);
+                        if(data.status){
+                            location.reload();
+                        }else{
+                           alert(data.msg)
+                        }
+                    }
+                }
+            )
+        }
         function ajaxsend() {
             $.ajax(
                 {
