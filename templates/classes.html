@@ -47,6 +47,15 @@
             <span id="errormsg"></span>
     </div>
 
+    <div id='editmodal'  class="modal hide">
+            <h3>编辑框</h3>
+            <p>姓名：<input id="title" name="title" type="text"></p>
+            <input type="button" value="提交" onclick="ajaxsend();" />
+            <input type="button" value="取消" onclick="cancelmodal();" />
+
+            <span id="errormsg"></span>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -60,9 +69,12 @@
                 <tr>
                     <td>{{row.id}}</td>
                     <td>{{row.title}}</td>
-                    <td><a href="/del_class/?nid={{ row.id }}">删除</a>
+                    <td>
+                        <a href="/del_class/?nid={{ row.id }}">删除</a>
                         |
                         <a href="/edit_class/?nid={{ row.id }}">编辑</a>
+                        |
+                        <a onclick="modaledit()">对话框编辑</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -76,8 +88,14 @@
         }
         function cancelmodal() {
             document.getElementById("shadow").classList.add('hide');
-            document.getElementById("modal").classList.add('hide');
+            document.getElementById("editmodal").classList.add('hide');
         }
+
+        function modaledit(){
+            document.getElementById("shadow").classList.remove('hide');
+            document.getElementById("editmodal").classList.remove('hide');
+        }
+
         function ajaxsend() {
             $.ajax(
                 {

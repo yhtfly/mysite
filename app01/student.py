@@ -9,23 +9,19 @@ def student(request):
 
 def add_student(request):
     if request.method == 'GET':
-        conn = pymysql.connect(host='192.168.0.111', port=3306, user='root', passwd='htxq1230', db='mydb')
-        cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
-        effect_row = cursor.execute("select id,title from classes")
-        class_list = cursor.fetchall()
-        cursor.close()
-        conn.close()
+        class_list=get_list("select id,title from classes")
         return render(request,'add_student.html',{'class_list':class_list})
     else:
         name = request.POST.get('name')
         title = request.POST.get('class_id')
-        conn = pymysql.connect(host='192.168.0.111', port=3306, user='root', passwd='htxq1230', db='mydb')
-        cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
-        effect_row = cursor.execute("insert into student(name,class_id) value(%s,%s)",[name,title])
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return redirect('/student')
+        modify("insert into student(name,class_id) value(%s,%s)",[name,title])
+        return redirect('/student/')
+
+
+def del_student(request):
+    nid = request.GET.get('nid')
+    modify('delete from student where id=%s',nid)
+    return redirect('/student/')
 
 def edit_student(request):
     if request.method == 'GET':
@@ -44,4 +40,6 @@ def edit_student(request):
         sql = 'update student set name=%s,class_Id=%s where id=%s'
         modify(sql,[name,class_id,nid])
         return redirect('/student/')
+
+
 
