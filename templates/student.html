@@ -50,10 +50,12 @@
                 <tr>
                     <td>{{row.id}}</td>
                     <td>{{row.name}}</td>
-                    <td>{{row.title }}</td>
+                    <td editclassid="{{ row.class_id }}">{{row.title }}</td>
                     <td><a href="/del_student/?nid={{ row.id }}">删除</a>
                         |
                         <a href="/edit_student/?nid={{ row.id }}">编辑</a>
+                        |
+                        <a class="editmodal">对话框编辑</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -73,6 +75,22 @@
         </p>
         <p><input type="text" style="display: none;"></p>
         <p><input id="addbtn" type="button" value="提交"></p>
+    </div>
+
+     <div id="edit_modal"  class="modal hide">
+        <h3>编辑学生</h3>
+        <p>姓名：<input id="editname" type="text" name="name" placeholder="姓名"></p>
+        <p>
+            班级：
+            <select id="editclassid" name="classid">
+                {% for row in class_list %}
+                    <option value="{{ row.id }}">{{ row.title }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p><input id="editid" type="text" style="display: none;"></p>
+        <p><input id="editbtn" type="button" value="提交"></p>
+        <span id="errormsg" style="color:red"></span>
     </div>
 
     <script src="/static/jquery.min.js"></script>
@@ -100,6 +118,41 @@
                     }
                 )
             })
+
+            $('.editmodal').click(function () {
+                $('#shadow,#edit_modal').removeClass('hide')
+                var student_list=($(this)).parent().prevAll()
+                var id = $(student_list[2]).text()
+                var name = $(student_list[1]).text()
+                var class_id = $(student_list).attr('editclassid')
+
+                $('#editname').val(name)
+                $('#editid').val(id)
+                $('#editclassid').val(class_id)
+
+                console.log(id,name,class_id)
+            })
+
+            $('#editbtn').click(function () {
+                $.ajax(
+                    {
+                        url:'/modal_edit_student/',
+                        type:'POST',
+                        data:{'name':$('#editname').val(),'id':$('#editid').val(),'class_id':$('#editclassid').val()},
+                        dataType:'JSON',
+                        success:function (data) {
+                            if(data.status){
+                                location.reload()
+                            }else{
+                                $('#errormsg').text(data.msg)
+                            }
+
+                        }
+
+                    }
+                )
+            })
+
         })
     </script>
 </body>

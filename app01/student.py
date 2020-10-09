@@ -4,7 +4,7 @@ from utils.sqlheper import get_list,modify
 from django.http import HttpResponse
 
 def student(request):
-    sql = 'select student.id,student.name,classes.title from student left join classes on student.class_id=classes.id'
+    sql = 'select student.id,student.name,student.class_id,classes.title from student left join classes on student.class_id=classes.id'
     student_list=get_list(sql)
     class_list=get_list('select id,title from classes')
     return render(request, "student.html", {'student_list': student_list,'class_list':class_list})
@@ -55,6 +55,23 @@ def modal_add_student(request):
         ret['msg'] = str(e)
     import json
     return HttpResponse(json.dumps(ret))
+
+
+def modal_edit_student(request):
+    ret = {'status':True,'msg':None}
+    try:
+        name = request.POST.get('name')
+        id = request.POST.get('id')
+        class_id = request.POST.get('class_id')
+        modify('update student set name=%s,class_id=%s where id=%s',[name,class_id,id])
+    except Exception as e:
+        ret['status'] = False
+        ret['msg'] = str(e)
+
+    import json
+    ret = json.dumps(ret)
+    return HttpResponse(ret)
+
 
 
 
