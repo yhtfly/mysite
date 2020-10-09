@@ -7,7 +7,15 @@
 <body>
     <h1>添加老师</h1>
     <form method="POST" action="/add_teacher/">
-        <p>老师姓名：<input type="text" name="teacher_name" /></p>
+        <p><input type="text" name="name" placeholder="老师姓名" /></p>
+        <p>
+            <select multiple="multiple" size='10' name="class_ids">
+                {% for foo in class_list %}
+                    <option value="{{ foo.id }}">{{ foo.title }}</option>
+                {% endfor %}
+
+            </select>
+        </p>
         <input type="submit" value="提交" />
     </form>
 </body>

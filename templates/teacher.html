@@ -7,19 +7,26 @@
 <body>
 <h1>教师职工表</h1>
 <div><h3><a href="/add_teacher/">添加</a></h3></div>
-<table>
+<table border="1" cellspacing="0" cellpadding="0">
     <thead>
         <tr>
             <th>编号</th>
             <th>姓名</th>
+            <th>班级</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
         {% for row in teacher_list  %}
             <tr>
-                <td>{{ row.id }}</td>
+                <td>{{ row.tid }}</td>
                 <td>{{ row.name }}</td>
+                <td>
+                    {% for foo in row.titles %}
+                        <span style="display: inline-block;padding: 5px; border:1px solid red;">{{ foo }}</span>
+                    {% endfor %}
+
+                </td>
                 <td>
                     <a href="/del_teacher/?id={{ row.id }}">删除</a>
                     |
