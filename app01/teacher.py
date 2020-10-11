@@ -77,3 +77,13 @@ def edit_teacher(request):
 
         return redirect('/teacher/')
 
+
+def get_all_class(request):
+        import time
+        time.sleep(5)
+        obj = SqlHeper()
+        class_list=obj.get_list('select id,title from classes')
+        obj.close()
+        import json
+        return HttpResponse(json.dumps(class_list))
+

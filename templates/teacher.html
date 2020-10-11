@@ -3,10 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .hide{
+            display: none;
+        }
+        .shadow{
+            position:fixed;
+            left:0;
+            top:0;
+            right:0;
+            bottom:0;
+            background-color: black;
+            opacity:0.4;
+            z-index: 999;
+        }
+        .loading{
+            position:fixed;
+            width:640px;
+            height: 332px;
+            left:50%;
+            top:50%;
+            margin-left: -320px;
+            margin-top:-166px;
+            background-image: url('/static/image/1111.gif');
+        }
+        .modal{
+            position:fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            height:300px;
+            width:400px;
+            background-color: white;
+            margin-left:-200px;
+            margin-top:-150px;
+        }
+    </style>
 </head>
+
+
+
 <body>
 <h1>教师职工表</h1>
-<div><h3><a href="/add_teacher/">添加</a></h3></div>
+<div id='shadow' class="shadow hide"></div>
+<div id="loading" class="loading hide"></div>
+<div id='modal'  class="modal hide">
+    <p>
+        老师姓名：<input type="text" name="name">
+    </p>
+
+    <p>
+        <select id="class_ids" multiple size="10"></select>
+    </p>
+
+</div>
+
+
+<div><h3>
+    <a href="/add_teacher/">添加</a>
+    |
+    <a id="modal_addbtn">对话框添加</a>
+</h3></div>
+
 <table border="1" cellspacing="0" cellpadding="0">
     <thead>
         <tr>
@@ -38,11 +96,34 @@
     </tbody>
 </table>
 
-
-
-
+<script src="/static/jquery.min.js"></script>
 <script>
-
+    $(function () {
+        bindadd()
+    })
+    
+    function bindadd() {
+        $('#modal_addbtn').click(function () {
+            $('#shadow,#loading').removeClass('hide')
+            $.ajax(
+                {
+                    url:'/get_all_class/',
+                    type:'GET',
+                    dataType:'JSON',
+                    success:function (data) {
+                        $.each(data,function (i,row) {
+                            var tag = document.createElement('option');
+                            tag.innerHTML = row.title;
+                            tag.setAttribute('value',row.id);
+                            $('#class_ids').append(tag);
+                        })
+                        $('#loading').addClass('hide')
+                        $('#modal').removeClass('hide')
+                    }
+                }
+            )
+        })
+    }
 
 </script>
 </body>
