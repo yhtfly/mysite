@@ -1,14 +1,15 @@
-from django.shortcuts  import render,redirect
+from django.shortcuts  import render,redirect,HttpResponse
 import pymysql
-from utils.sqlheper import get_list,modify,create,SqlHeper
+from utils.sqlheper import SqlHeper
 
 def teacher(request):
     #teacher_list = get_list('select id,name from teacher')
+    obj = SqlHeper()
     sql = 'SELECT teacher.id as tid,teacher.name,classes.title from teacher ' \
           'left join teacher2class on teacher.id=teacher2class.teacher_id ' \
           'left join classes on classes.id = teacher2class.class_id'
 
-    teacher_list=get_list(sql)
+    teacher_list=obj.get_list(sql)
 
     result = {}
     for row in teacher_list:
@@ -20,8 +21,9 @@ def teacher(request):
     return render(request,"teacher.html",{'teacher_list':result.values()})
 
 def add_teacher(request):
+    obj = SqlHeper()
     if request.method == 'GET':
-        class_list = get_list('select id,title from classes')
+        class_list = obj.get_list('select id,title from classes')
         return render(request,'add_teacher.html',{'class_list':class_list})
     else:
         obj = SqlHeper()
@@ -37,17 +39,41 @@ def add_teacher(request):
         return redirect('/teacher/')
 
 def del_teacher(request):
-    nid = request.GET.get('id')
-    modify('delete from teacher where id = %s',nid)
+    obj = SqlHeper()
+    nid = request.GET.get('nid')
+    obj.modify('delete from teacher where id = %s',nid)
     return redirect(('/teacher/'))
 
 def edit_teacher(request):
     if request.method == 'GET':
-        nid = request.GET.get('id')
-        result=get_list('select id,name from teacher where id=%s',[nid,],False)
-        return render(request,"edit_teacher.html",{'result':result})
-    else:
+        nid = request.GET.get('tid')
         name = request.POST.get('name')
-        nid = request.GET.get('id')
-        modify('update teacher set name=%s where id=%s',[name,nid])
+
+        obj = SqlHeper()
+        teacher_info = obj.get_one('select id,name from teacher where id=%s',[nid,])
+        class_list=obj.get_list('select id,title from classes')
+        class_id_list = obj.get_list('select class_id from teacher2class where teacher_id=%s',[nid,])
+        lst = []
+        for item in class_id_list:
+            lst.append(item['class_id'])
+        class_id_list = lst
+        return render(request,'edit_teacher.html',{'teacher_info':teacher_info,'class_list':class_list,'class_id_list':class_id_list,'tid':nid})
+    else:
+        nid = request.GET.get('nid')
+        name = request.POST.get('name')
+        class_id_list = request.POST.getlist('clsid')
+        obj = SqlHeper()
+        obj.modify('update teacher set name=%s where id=%s',[name,nid])
+
+        print(nid)
+
+        obj.modify('delete from teacher2class where teacher_id=%s',[nid,])
+
+        lst = []
+        for cls in class_id_list:
+            lst.append((nid, cls))
+        obj.multiple_modify('insert into teacher2class(teacher_id,class_id) value(%s,%s)', lst)
+        obj.close()
+
         return redirect('/teacher/')
+

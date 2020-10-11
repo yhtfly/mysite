@@ -6,9 +6,21 @@
 </head>
 <body>
     <h1>教师职工修改</h1>
-    <form method="POST" action="/edit_teacher/?id={{ result.id }}">
-        <p>教师姓名：<input type="text" name="name" value="{{ result.name }}"></p>
-        <input type="submit" value="提交">
+    <form method="POST" action="/edit_teacher/?nid={{ tid }}">
+        <p>教师姓名：<input type="text" name="name" value="{{ teacher_info.name }}"></p>
+        <select multiple="multiple" size="10" name="clsid">
+            {% for row in class_list %}
+                {% if row.id in class_id_list %}
+                    <option selected value="{{ row.id }}">{{ row.title }}</option>
+                {% else %}
+                    <option value="{{ row.id }}">{{ row.title }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <p>
+          <input type="submit" value="提交">
+        </p>
+
     </form>
 
 </body>
