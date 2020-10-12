@@ -79,11 +79,32 @@ def edit_teacher(request):
 
 
 def get_all_class(request):
-        import time
-        time.sleep(5)
         obj = SqlHeper()
         class_list=obj.get_list('select id,title from classes')
         obj.close()
         import json
         return HttpResponse(json.dumps(class_list))
 
+
+def modal_add_teacher(request):
+    ret = {'status':True,'msg':None}
+    try:
+        teacher_name = request.POST.get('teacher_name')
+        class_id_list = request.POST.getlist('class_id_list')
+
+        print(teacher_name,class_id_list)
+        obj = SqlHeper()
+        teacher_id=obj.create('insert into teacher(name) value(%s)',[teacher_name])
+
+        lst = []
+        for cls in class_id_list:
+            lst.append((teacher_id, cls))
+        obj.multiple_modify('insert into teacher2class(teacher_id,class_id) value(%s,%s)', lst)
+        obj.close()
+
+    except Exception as e:
+        ret['status']=False
+        ret['msg']=str(e)
+
+    import json
+    return HttpResponse(json.dumps(ret))

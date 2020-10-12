@@ -28,6 +28,7 @@ urlpatterns = [
     path('add_teacher/',teacher.add_teacher),
     path('del_teacher/',teacher.del_teacher),
     path('edit_teacher/',teacher.edit_teacher),
+    path('modal_add_teacher/',teacher.modal_add_teacher),
     path('student/',student.student),
     path('add_student/',student.add_student),
     path('modal_add_student/',student.modal_add_student),

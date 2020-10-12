@@ -49,11 +49,14 @@
 <div id="loading" class="loading hide"></div>
 <div id='modal'  class="modal hide">
     <p>
-        老师姓名：<input type="text" name="name">
+        老师姓名：<input id="addname" type="text" name="name">
     </p>
 
     <p>
         <select id="class_ids" multiple size="10"></select>
+    </p>
+    <p>
+        <a id="add_modal_button">提交</a>
     </p>
 
 </div>
@@ -100,6 +103,7 @@
 <script>
     $(function () {
         bindadd()
+        bind_modaladd()
     })
     
     function bindadd() {
@@ -120,6 +124,31 @@
                         $('#loading').addClass('hide')
                         $('#modal').removeClass('hide')
                     }
+                }
+            )
+        })
+    }
+
+    function bind_modaladd() {
+        $('#add_modal_button').click(function () {
+            var teacher_name = $('#addname').val();
+            var class_id_list = $('#class_ids').val();
+            $.ajax(
+                {
+                    url:'/modal_add_teacher/',
+                    type:'POST',
+                    data:{'teacher_name':teacher_name,'class_id_list':class_id_list},
+                    dataType:'JSON',
+                    traditional:true,
+                    success:function (args){
+                       if(args.status){
+                           location.reload();
+                       }else{
+                           $('#errmsg').text(args.msg)
+                       }
+
+                    }
+
                 }
             )
         })
