@@ -76,3 +76,5 @@ def modal_edit_class(request):
         return HttpResponse(json.dumps(ret))
 
 
+def layout(request):
+    return render(request,'layout.html')

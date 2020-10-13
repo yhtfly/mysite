@@ -23,6 +23,7 @@ urlpatterns = [
     path('add_class/',views.add_class),
     path('del_class/',views.del_class),
     path('edit_class/',views.edit_class),
+    path('layout/',views.layout),
     path('test/',test.test),
 
     path('get_all_class/',teacher.get_all_class),
