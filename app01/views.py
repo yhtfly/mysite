@@ -37,7 +37,7 @@ def edit_class(request):
     obj = SqlHeper()
     if request.method == 'GET':
         nid = request.GET.get('nid')
-        result = obj.get_list("select id,title from classes where id=%s", [nid,],False)
+        result = obj.get_one("select id,title from classes where id=%s", [nid])
         title=result['title']
         return render(request, "edit_class.html", {'nid': nid, 'title': title})
     else:

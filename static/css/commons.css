@@ -1,0 +1,86 @@
+body{
+    margin:0;
+}
+.left{
+    float:left;
+}
+.right{
+    float:right;
+}
+
+.pg-head{
+    height: 48px;
+    min-width: 1190px;
+    background-color: #2aabd2;
+    line-height: 48px;
+}
+.pg-head .rmenus a{
+    display: inline-block;
+    padding: 0 15px;
+    color:white;
+}
+.pg-head .rmenus a:hover{
+    background: #2b669a;
+}
+.logo{
+    color: white;
+    font-size: 20px;
+    width:200px;
+    text-align: center;
+    border-right: 1px solid #3c763d;
+}
+.menus{
+    width: 200px;
+    position: absolute;
+    top:48px ;
+    left:0;
+    bottom:0;
+    background: #9acfea;
+    border-right: 1px solid #3c763d;
+}
+.rmenus{
+    color:black;
+}
+.content{
+    position: absolute;
+    top:48px;
+    left:200px;
+    right:0px;
+    bottom:0px;
+    min-width: 990px;
+    overflow: scroll;
+    z-index:99;
+}
+
+.pg-head .avatar {
+    padding:0 20px;
+}
+.pg-head .avatar img{
+   border-radius: 50%;
+}
+.pg-head .avatar .userinfo{
+    display: none;
+    position: absolute;
+    width:200px;
+    top: 48px;
+    right: 2px;
+    background: white;
+    color:black;
+    border: 1px solid #dddddd;
+    z-index: 100;
+}
+.pg-head .avatar:hover .userinfo{
+    display: block;
+}
+
+.pg-head .avatar:hover .userinfo a{
+    display: block;
+}
+
+.pg-body .menus a{
+    display: block;
+    font-size: 15px;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 1px solid #dddddd;
+}
