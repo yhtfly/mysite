@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app01 import views,teacher,student,test
+from app01 import views,teacher,student,test,login
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('',views.index),
@@ -41,4 +41,6 @@ urlpatterns = [
     path('edit_student/',student.edit_student),
     path('modal_add_class/',views.modal_add_class),
     path('modal_edit_class/',views.modal_edit_class),
+
+    path('login/',login.login)
 ]

@@ -4,6 +4,8 @@ from utils.sqlheper import SqlHeper
 from django.http import HttpResponse
 
 def student(request):
+    #登录功能用装饰器实现一下
+
     obj = SqlHeper()
     sql = 'select student.id,student.name,student.class_id,classes.title from student left join classes on student.class_id=classes.id'
     student_list=obj.get_list(sql)

@@ -10,7 +10,15 @@ def index(request):
 
 
 
+#登录功能用装饰器实现一下
 def classes(request):
+    #从cookies中获取凭证
+    #tk=request.COOKIES.get('ticket')
+    tk=request.get_signed_cookie('ticket',salt='9999')
+    if not tk:
+        return redirect('/login/')
+
+
     obj = SqlHeper()
     class_list=obj.get_list("select id,title from classes")
     return render(request,'classes.html',{'class_list':class_list})

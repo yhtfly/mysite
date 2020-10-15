@@ -3,6 +3,8 @@ import pymysql
 from utils.sqlheper import SqlHeper
 
 def teacher(request):
+    #登录功能用装饰器实现一下
+
     #teacher_list = get_list('select id,name from teacher')
     obj = SqlHeper()
     sql = 'SELECT teacher.id as tid,teacher.name,classes.title from teacher ' \
