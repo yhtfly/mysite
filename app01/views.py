@@ -35,21 +35,25 @@ def add_class(request):
             return redirect('/classes/')
         else:
             return render(request,'add_class.html',{'msg':'班级名称不能为空'})
-def del_class(request):
+def del_class(request,args):
     obj = SqlHeper()
-    nid = request.GET.get('nid')
+    #nid = request.GET.get('nid')
+    nid = args[0]
+    print(nid)
     obj.modify("delete from classes where id=%s", nid)
     return redirect('/classes/')
 
-def edit_class(request):
+def edit_class(request,*args):
     obj = SqlHeper()
     if request.method == 'GET':
-        nid = request.GET.get('nid')
+        #nid = request.GET.get('nid')
+        nid = args[0]
         result = obj.get_one("select id,title from classes where id=%s", [nid])
         title=result['title']
         return render(request, "edit_class.html", {'nid': nid, 'title': title})
     else:
-        nid = request.POST.get('nid')
+        #nid = request.POST.get('nid')
+        nid = args[0]
         title = request.POST.get('title')
         obj.modify("update classes set title=%s where id=%s",[title,nid,])
         return redirect('/classes/')

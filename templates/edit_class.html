@@ -7,7 +7,7 @@
 <body>
     <h1>编辑班级</h1>
 
-    <form method='POST' action="/edit_class/">
+    <form method='POST' action="/edit_class/{{ nid }}.html/">
         <p>班级名称:<input  name="title" value="{{ title }}" /></p>
         <input style="display: none;"  name="nid" value="{{ nid }}">
         <input type="submit" value="提交" />
