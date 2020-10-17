@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path
-from app01 import views,teacher,student,test,login
+from app01 import views,teacher,student,test,login,paging,custompage
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -28,7 +28,8 @@ urlpatterns = [
     re_path('edit_class/([0-9]+).html/',views.edit_class),
     path('layout/',views.layout),
     re_path('test.html$',test.test),
-    re_path('login1.html$',test.login.as_view()),
+    re_path('paging.html$',paging.paging),
+    re_path('custompage.html$',custompage.custom),
 
     path('get_all_class/',teacher.get_all_class),
     path('teacher/',teacher.teacher),

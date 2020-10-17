@@ -1,9 +1,8 @@
 from django.shortcuts  import render,redirect,HttpResponse
-import pymysql
 from django.views import View
-from utils.sqlheper import SqlHeper
+from app01.models import UserGroup,UserInfo
 def test(request):
-    from app01.models import UserGroup,UserInfo
+
     #插入
     #UserGroup.objects.create(title='小英')
     #UserInfo.objects.create(user='张三',password='pwd',ug_id=1)
@@ -21,15 +20,15 @@ def test(request):
     #更新
     #UserGroup.objects.filter(id=1).update(title='鸣人')
 
-    result=UserInfo.objects.all()
-    for row in result:
-        print(row.user,row.password,row.ug_id,row.ug.title)
+    # obj = UserGroup.objects.all().first()
+    # for row in obj.userinfo_set.all():
+    #     print(row.user,row.age)
+
+
+    obj = UserGroup.objects.all()
+    for row in obj:
+        print(row.id,row.title,row.userinfo_set.filter(name='李四')[0].name)
+
     return HttpResponse('hello 视图')
 
-
-class login(View):
-    def get(self,request):
-        return HttpResponse('view.get')
-    def post(self,request):
-        return HttpResponse('view.post')
 
